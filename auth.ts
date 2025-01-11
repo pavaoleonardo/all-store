@@ -7,8 +7,8 @@ import type { NextAuthConfig } from 'next-auth';
 
 export const config = {
   pages: {
-    signIn: '/signin',
-    signOut: '/signout',
+    signIn: '/sign-in',
+    error: '/sign-in',
   },
   session: {
     strategy: 'jwt',
@@ -54,7 +54,7 @@ export const config = {
     }),
   ],
   callbacks: {
-    async session({ session, user, trigger, token }): Promise<any> {
+    async session({ session, user, trigger, token }: any) {
       // Set the user id from the token
       session.user.id = token.sub;
 
