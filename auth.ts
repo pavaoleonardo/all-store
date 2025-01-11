@@ -54,7 +54,7 @@ export const config = {
     }),
   ],
   callbacks: {
-    async session({ session, user, trigger, token }): any {
+    async session({ session, user, trigger, token }): Promise<any> {
       // Set the user id from the token
       session.user.id = token.sub;
 
