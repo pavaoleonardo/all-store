@@ -14,7 +14,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Sign in',
+  title: 'Sign In',
 };
 
 const SignInPage = async (props: {
@@ -25,7 +25,7 @@ const SignInPage = async (props: {
   const session = await auth();
 
   if (session) {
-    redirect(callbackUrl || '/');
+    return redirect(callbackUrl || '/');
   }
 
   return (
@@ -42,7 +42,7 @@ const SignInPage = async (props: {
               className='rounded-full'
             />
           </Link>
-          <CardTitle className='text-center'>Sign in</CardTitle>
+          <CardTitle className='text-center'>Sign In</CardTitle>
           <CardDescription className='text-center'>
             Sign in to your account
           </CardDescription>

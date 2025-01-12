@@ -26,7 +26,7 @@ const SignUpPage = async (props: {
   const session = await auth();
 
   if (session) {
-    redirect(callbackUrl || '/');
+    return redirect(callbackUrl || '/');
   }
 
   return (
@@ -45,7 +45,7 @@ const SignUpPage = async (props: {
           </Link>
           <CardTitle className='text-center'>Create Account</CardTitle>
           <CardDescription className='text-center'>
-            Enter your information bellow to sign up
+            Enter your information below to sign up
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-4'>

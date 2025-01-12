@@ -19,7 +19,7 @@ export function formatNumberWithDecimal(num: number): string {
 
 // Format errors
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function formatError(error: any) {
+export function formatError(error: any) {
   if (error.name === 'ZodError') {
     //Handle ZodError
 
@@ -34,7 +34,7 @@ export async function formatError(error: any) {
   ) {
     // Handle prisma error
     const field = error.meta?.target ? error.meta.target[0] : 'Field';
-    return `${field.charAt(0).toUpperCase() + field.slice(1)} already existis`;
+    return `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;
   } else {
     // Handle other errors
     return typeof error.message === 'string'
