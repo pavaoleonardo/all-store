@@ -1,6 +1,9 @@
 import NextAuth from 'next-auth';
-import { PrismaAdapter } from '@auth/prisma-adapter';
-import { prisma } from '@/db/prisma';
+import {
+  user as prismaUser,
+  cart as prismaCart,
+  authAdapter,
+} from '@/db/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from './lib/encrypt';
 import type { NextAuthConfig } from 'next-auth';
@@ -16,7 +19,7 @@ export const config = {
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  adapter: PrismaAdapter(prisma),
+  adapter: authAdapter,
   providers: [
     CredentialsProvider({
       credentials: {
@@ -27,7 +30,7 @@ export const config = {
         if (credentials == null) return null;
 
         // Find user in database
-        const user = await prisma.user.findFirst({
+        const user = await prismaUser.findFirst({
           where: {
             email: credentials.email as string,
           },
@@ -81,7 +84,7 @@ export const config = {
           token.name = user.email!.split('@')[0];
 
           // Update the database to reflect the token name
-          await prisma.user.update({
+          await prismaUser.update({
             where: { id: user.id },
             data: { name: token.name },
           });
