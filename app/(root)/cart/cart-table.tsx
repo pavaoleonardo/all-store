@@ -50,7 +50,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                     <TableCell>
                       <Link
                         href={`/product/${item.slug}`}
-                        className='flex items-center'
+                        className='flex items-center justify-center'
                       >
                         <Image
                           src={item.image}
@@ -61,7 +61,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         <span className='px-2'>{item.name}</span>
                       </Link>
                     </TableCell>
-                    <TableCell className='text-center gap-2'>
+                    <TableCell className='flex-center gap-1'>
                       <Button
                         disabled={isPending}
                         variant='outline'
@@ -86,7 +86,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           <Minus className='w-4 h-4' />
                         )}
                       </Button>
-                      <span> {item.qty} </span>
+                      <span>{item.qty}</span>
                       <Button
                         disabled={isPending}
                         variant='outline'
@@ -110,7 +110,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         )}
                       </Button>
                     </TableCell>
-                    <TableCell className='text-right'>€ {item.price}</TableCell>
+                    <TableCell className='text-right'>€{item.price}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
