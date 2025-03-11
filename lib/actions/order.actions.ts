@@ -5,11 +5,11 @@ import { formatError } from '../utils';
 import { auth } from '@/auth';
 import { getMyCart } from './cart.actions';
 import { getUserById } from './user.actions';
-import { insertOrderItemSchema } from '../validators';
+import { insertOrderSchema } from '../validators';
 import { prisma } from '@/db/prisma';
 import { CartItem } from '@/types';
 
-// Create order and creat the order items
+// Create order and create the order items
 export async function createOrder() {
   try {
     const session = await auth();
@@ -46,7 +46,7 @@ export async function createOrder() {
     }
 
     // Create order object
-    const order = insertOrderItemSchema.parse({
+    const order = insertOrderSchema.parse({
       userId: user.id,
       shippingAddress: user.address,
       paymentMethod: user.paymentMethod,
@@ -68,15 +68,15 @@ export async function createOrder() {
             ...item,
             price: item.price,
             orderId: insertedOrder.id,
+            qty: item.qty.toString(),
           },
         });
       }
 
       // Clear cart
       await tx.cart.update({
-        where: {
-          id: cart.id,
-        },
+        where: { id: cart.id },
+
         data: {
           items: [],
           totalPrice: 0,
@@ -101,3 +101,5 @@ export async function createOrder() {
     return { success: false, message: formatError(error) };
   }
 }
+
+
