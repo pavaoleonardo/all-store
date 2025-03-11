@@ -63,7 +63,7 @@ const PlaceOrderPage = async () => {
           <Card>
             <CardContent className='p-4 gap-4'>
               <h2 className='text-xl pb-4'>Payment Method</h2>
-              <p>{userAddress.fullName}</p>
+              <p>{user.paymentMethod}</p>
 
               <div className='mt-3'>
                 <Link href='/payment-method'>
