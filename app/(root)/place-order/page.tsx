@@ -1,11 +1,10 @@
-import { Metadata } from 'next';
 import { auth } from '@/auth';
-import { getUserById } from '@/lib/actions/user.actions';
-
-import CheckOutSteps from '@/components/shared/checkout-steps';
 import { getMyCart } from '@/lib/actions/cart.actions';
-import { redirect } from 'next/navigation';
+import { getUserById } from '@/lib/actions/user.actions';
 import { ShippingAddress } from '@/types';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
+import CheckOutSteps from '@/components/shared/checkout-steps';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -106,9 +105,7 @@ const PlaceOrderPage = async () => {
                       <TableCell>
                         <span className='px-2'>{item.qty}</span>
                       </TableCell>
-                      <TableCell>
-                        <span className='text-right'>€ {item.price}</span>
-                      </TableCell>
+                      <TableCell>€ {item.price}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
