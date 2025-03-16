@@ -73,7 +73,7 @@ const OrderDetailsTable = ({
   };
 
   const handleApprovePayPalOrder = async (data: { orderId: string }) => {
-    const res = await approvePayPalOrder(order.id, data);
+      const res = await approvePayPalOrder(order.id, data);
 
     if (res) {
       toast({
