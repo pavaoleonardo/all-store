@@ -24,6 +24,7 @@ import {
   createPayPalOrder,
   approvePayPalOrder,
 } from '@/lib/actions/order.actions';
+import { OnApproveData } from '@paypal/paypal-js';
 
 const OrderDetailsTable = ({
   order,
@@ -71,17 +72,22 @@ const OrderDetailsTable = ({
 
     return res.data;
   };
-
-  const handleApprovePayPalOrder = async (data: { orderId: string }) => {
-      const res = await approvePayPalOrder(order.id, data);
+  const handleApprovePayPalOrder = async (data: OnApproveData) => {
+    const res = await approvePayPalOrder(order.id, { orderId: data.orderID });
 
     if (res) {
       toast({
         variant: res.success ? 'default' : 'destructive',
         description: res.message,
       });
+    } else {
+      toast({
+        variant: 'destructive',
+        description: 'An error occurred',
+      });
     }
   };
+
   return (
     <>
       <h1 className='py-2 text-2xl'>Order {formatId(id)}</h1>
