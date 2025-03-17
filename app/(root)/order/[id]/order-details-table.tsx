@@ -24,7 +24,7 @@ import {
   createPayPalOrder,
   approvePayPalOrder,
 } from '@/lib/actions/order.actions';
-import { OnApproveData } from '@paypal/paypal-js';
+
 
 const OrderDetailsTable = ({
   order,
@@ -63,29 +63,25 @@ const OrderDetailsTable = ({
 
   const handleCreatePayPalOrder = async () => {
     const res = await createPayPalOrder(order.id);
+
     if (!res.success) {
       toast({
         variant: 'destructive',
         description: res.message,
       });
+      throw new Error(res.message);
     }
 
     return res.data;
   };
-  const handleApprovePayPalOrder = async (data: OnApproveData) => {
-    const res = await approvePayPalOrder(order.id, { orderId: data.orderID });
 
-    if (res) {
-      toast({
-        variant: res.success ? 'default' : 'destructive',
-        description: res.message,
-      });
-    } else {
-      toast({
-        variant: 'destructive',
-        description: 'An error occurred',
-      });
-    }
+  const handleApprovePayPalOrder = async (data: { orderID: string }) => {
+    const res = await approvePayPalOrder(order.id, data);
+
+    toast({
+      variant: res.success ? 'default' : 'destructive',
+      description: res.message,
+    });
   };
 
   return (
@@ -184,7 +180,9 @@ const OrderDetailsTable = ({
               {/* PayPal Payment */}
               {!isPaid && paymentMethod === 'PayPal' && (
                 <div>
-                  <PayPalScriptProvider options={{ clientId: paypalClientId }}>
+                  <PayPalScriptProvider
+                    options={{ clientId: paypalClientId, currency: 'EUR' }}
+                  >
                     <PrintLoadingState />
                     <PayPalButtons
                       createOrder={handleCreatePayPalOrder}

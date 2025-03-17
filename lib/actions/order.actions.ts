@@ -136,7 +136,7 @@ export async function createPayPalOrder(orderId: string) {
             id: paypalOrder.id,
             email_address: '',
             status: '',
-            picePaid: 0,
+            pricePaid: 0,
           },
         },
       });
@@ -155,10 +155,7 @@ export async function createPayPalOrder(orderId: string) {
 }
 
 // Approve paypal order and update order to paid
-export async function approvePayPalOrder(
-  orderId: string,
-  data: { orderId: string }
-) {
+export async function approvePayPalOrder(orderId: string, data: { orderID: string }) {
   try {
     // Get order from database
     const order = await prisma.order.findFirst({
@@ -167,7 +164,7 @@ export async function approvePayPalOrder(
 
     if (!order) throw new Error('Order not found');
 
-    const captureData = await paypal.captureOrder(data.orderId);
+    const captureData = await paypal.capturePayment(data.orderID);
 
     if (
       !captureData ||
@@ -175,32 +172,31 @@ export async function approvePayPalOrder(
       captureData.status !== 'COMPLETED'
     ) {
       throw new Error('Error in PayPal payment');
-
-      // Update order to paid
-      await updateOrderToPaid({
-        orderId,
-        paymentResult: {
-          id: captureData.id,
-          email_address: captureData.payer.email_address,
-          status: captureData.status,
-          pricePaid:
-            captureData.purchase_units[0]?.payments?.captures[0]?.amount?.value,
-        },
-      });
-
-      revalidatePath(`/api/order/${orderId}`);
-      return {
-        success: true,
-        message: 'Your order has been paid',
-      };
     }
+    // Update order to paid
+    await updateOrderToPaid({
+      orderId,
+      paymentResult: {
+        id: captureData.id,
+        email_address: captureData.payer.email_address,
+        status: captureData.status,
+        pricePaid:
+          captureData.purchase_units[0]?.payments?.captures[0]?.amount?.value,
+      },
+    });
+
+    revalidatePath(`/order/${orderId}`);
+    return {
+      success: true,
+      message: 'Your order has been paid',
+    };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
 }
 
 // Update order to paid
-async function updateOrderToPaid({
+export async function updateOrderToPaid({
   orderId,
   paymentResult,
 }: {
