@@ -19,7 +19,7 @@ const PaymentMethodPage = async () => {
   return (
     <>
       <CheckOutSteps current={2} />
-      <PaymentMethodForm preferredPaymentMethod={user.paymentMethod} />;
+      <PaymentMethodForm preferredPaymentMethod={user.paymentMethod} />
     </>
   );
 };
