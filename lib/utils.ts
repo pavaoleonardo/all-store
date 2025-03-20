@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import qs from 'query-string';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -46,7 +47,7 @@ export function formatError(error: any) {
 // Round  number to 2 decimal places
 export function round2(value: number | string) {
   if (typeof value === 'number') {
-     return Math.round((value + Number.EPSILON) * 100) / 100
+    return Math.round((value + Number.EPSILON) * 100) / 100;
   } else if (typeof value === 'string') {
     return Math.round(Number(value + Number.EPSILON) * 100) / 100;
   } else {
@@ -72,8 +73,8 @@ export function formatCurrency(amount: number | string | null) {
 }
 
 // Shorten UUID
-export function formatId(id:string) {
-  return `..${id.substring(id.length - 6)}`
+export function formatId(id: string) {
+  return `..${id.substring(id.length - 6)}`;
 }
 
 // Format the date and time
@@ -115,3 +116,26 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
+
+// Form the pagination links
+export function formUrlQuery({
+  params,
+  key,
+  value,
+}: {
+  params: string;
+  key: string;
+  value: string | null;
+}) {
+  const query = qs.parse(params);
+
+  query[key] = value;
+
+  return qs.stringifyUrl(
+    {
+      url: window.location.pathname,
+      query,
+    },
+    { skipNull: true }
+  );
+}
