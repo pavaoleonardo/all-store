@@ -1,3 +1,4 @@
+// Removed duplicate import of insertProductSchema
 import { z } from 'zod';
 import { formatNumberWithDecimal } from './utils';
 import { PAYMENT_METHODS } from './constants';
@@ -23,6 +24,11 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+});
+
+// Schema for updating products
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, 'Id is required'),
 });
 
 // Schema for siging users in
@@ -93,10 +99,10 @@ export const insertOrderSchema = z.object({
   taxPrice: currency,
   totalPrice: currency,
   paymentMethod: z.string().refine((data) => PAYMENT_METHODS.includes(data), {
-    message: 'Invalid payment method'
+    message: 'Invalid payment method',
   }),
-  shippingAddress: shippingAddressSchema
-})
+  shippingAddress: shippingAddressSchema,
+});
 
 // Schema for inserting order item
 export const insertOrderItemSchema = z.object({
@@ -106,18 +112,18 @@ export const insertOrderItemSchema = z.object({
   name: z.string(),
   price: currency,
   qty: z.number(),
-})
+});
 
 // Schema for paypall payment
 export const paymentResultSchema = z.object({
   id: z.string(),
   status: z.string(),
   email_address: z.string(),
-  pricePaid: z.string(),   
-})
+  pricePaid: z.string(),
+});
 
 // Schema for updating user profile
 export const updateProfileSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters long'),
   email: z.string().min(3, 'Email must be at least 3 characters long'),
-})
+});
