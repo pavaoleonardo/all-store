@@ -19,7 +19,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               priority={true}
             />
           ) : (
-            <div className='h-[300px] w-[289px] bg-gray-200 flex justify-center items-center'>
+            <div className='h-[289px] w-[289px] bg-gray-200 flex justify-center items-center'>
               <span className='text-gray-500'>No Image Available</span>
             </div>
           )}
